@@ -19,9 +19,7 @@ miniz_dir = f'{vendor_dir}/miniz-2.2.0'
 
 extra_compile_args = []
 if sys.platform == 'win32':
-  extra_compile_args += [
-    '/std:c++11', '/O2'
-  ]
+  extra_compile_args += [ '/O2' ] # MSVC is C++11 by default
 else:
   extra_compile_args += [
     '-std=c++11', '-O3',
