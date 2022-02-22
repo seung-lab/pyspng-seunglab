@@ -73,6 +73,12 @@ def encode(
         compress_level
     )
 
+def header(data: bytes) -> dict:
+    """
+    Read the PNG ihdr header.
+    """
+    return c.spng_read_header(data)
+
 def load(data: bytes, format: Optional[str] = None) -> np.ndarray:
     """
     Load a PNG from a bytes object and return the image data as

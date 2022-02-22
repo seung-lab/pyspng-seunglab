@@ -69,8 +69,9 @@ setup(
     ext_modules=ext_modules,
     packages=find_packages(),
     extras_require={"test": "pytest"},
-    install_requires=[
-        'numpy',
-    ],
-    zip_safe=False,
+    entry_points={
+        "console_scripts": [
+            "pyspng=pyspng_cli:main"
+        ],
+    },
 )

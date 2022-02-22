@@ -159,6 +159,26 @@ py::bytes encode_image(
     return py::bytes(outbytes);
 }
 
+py::dict read_header(py::bytes png_bits) {
+    std::unique_ptr<spng_ctx, void(*)(spng_ctx*)> ctx(spng_ctx_new(0),  spng_ctx_free);
+    struct spng_ihdr ihdr;
+    int res;
+    if ((res = spng_get_ihdr(ctx.get(), &ihdr)) != SPNG_OK) {
+        throw std::runtime_error("pyspng: could not decode ihdr: " + std::string(spng_strerror(res)));
+    }
+
+    py::dict header;
+    header["width"] = ihdr.width;
+    header["height"] = ihdr.height;
+    header["bit_depth"] = ihdr.bit_depth;
+    header["color_type"] = ihdr.color_type;
+    header["compression_method"] = ihdr.compression_method;
+    header["filter_method"] = ihdr.filter_method;
+    header["interlace_method"] = ihdr.interlace_method;
+    
+    return header;
+}
+
 py::array decode_image_bytes(py::bytes png_bits, spng_format fmt) {
     std::unique_ptr<spng_ctx, void(*)(spng_ctx*)> ctx(spng_ctx_new(0),  spng_ctx_free);
 
@@ -260,6 +280,7 @@ PYBIND11_MODULE(_pyspng_c, m) {
            :toctree: _generate
 
            spng_format
+           spng_read_header
            spng_encode_image
            spng_decode_image_bytes
     )pbdoc";
@@ -273,6 +294,17 @@ PYBIND11_MODULE(_pyspng_c, m) {
         .value("SPNG_FMT_GA16",   SPNG_FMT_GA16)
         .value("SPNG_FMT_G8",     SPNG_FMT_G8)
         .export_values();
+
+    m.def("spng_read_header", &read_header, py::arg("data"), R"pbdoc(
+        Read the header of the PNG file and return it as a dict with
+        keys to integer values.
+
+        Returns {
+            width, height, bit_depth,
+            color_type, compression_method,
+            filter_method, interlace_method
+        }
+    )pbdoc");
 
     m.def("spng_encode_image", 
         &encode_image, py::arg("image"), py::arg("progressive"), 
