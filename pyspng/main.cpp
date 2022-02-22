@@ -161,6 +161,11 @@ py::bytes encode_image(
 
 py::dict read_header(py::bytes png_bits) {
     std::unique_ptr<spng_ctx, void(*)(spng_ctx*)> ctx(spng_ctx_new(0),  spng_ctx_free);
+
+    // Set source PNG
+    std::string bits = png_bits;
+    spng_set_png_buffer(ctx.get(), bits.data(), bits.length());
+
     struct spng_ihdr ihdr;
     int res;
     if ((res = spng_get_ihdr(ctx.get(), &ihdr)) != SPNG_OK) {
