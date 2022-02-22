@@ -6,7 +6,7 @@ import itertools
 import pyspng as m
 import glob
 
-print ('pyspng version', m.__version__)
+print ('pyspng-seunglab version', m.__version__)
 
 fname = os.path.join(os.path.dirname(__file__), 'test.png')
 
@@ -34,10 +34,10 @@ def encode_test():
             if recovered.ndim < 3:
                 recovered = recovered[..., np.newaxis]
 
-            assert np.all(img == recovered), f"{img.shape=}, {recovered.shape=}"
+            assert np.all(img == recovered), f"img.shape: {img.shape}, recovered.shape: {recovered.shape}"
             print('.', end='', flush=True)
         except:
-            print(f"{width=}, {height=}, {channel=}, {dtype=}, {progressive=}", flush=True)
+            print(f"width: {width}, height: {height}, channel: {channel}, dtype: {dtype}, progressive: {progressive}", flush=True)
             raise
 
 def synthetic_decode_test():
