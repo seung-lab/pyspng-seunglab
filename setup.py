@@ -48,7 +48,7 @@ else:
     extra_compile_args += [ "-DMINIZ_NO_STDIO=1", "-DSPNG_USE_MINIZ=1" ]
     ext_modules = [
         Extension("_pyspng_c",
-            [ "pyspng/main.cpp", f"{miniz_dir}/miniz.c", f"{spng_dir}/spng/spng.c" ],
+            [ "pyspng/main.cpp", f"{miniz_dir}/miniz.c", f"{spng_dir}/spng.c" ],
             include_dirs=[ spng_dir, miniz_dir, pybind11.get_include() ],
             # Example: passing in the version to the compiled code
             define_macros = [('VERSION_INFO', __version__)],
