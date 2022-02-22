@@ -6,3 +6,4 @@ include vendor/miniz-2.2.0/miniz.h
 include vendor/miniz-2.2.0/LICENSE
 include vendor/Makefile
 include LICENSE
+include requirements.txt
