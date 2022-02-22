@@ -114,6 +114,8 @@ py::bytes encode_image(
         .width = static_cast<uint32_t>(image.shape(1)),
         .bit_depth = bit_depth,
         .color_type = color_type,
+        .compression_method = 0,
+        .filter_method = 0,
         .interlace_method = static_cast<uint8_t>(interlace_method)
     };
     spng_set_ihdr(ctx.get(), &ihdr);
