@@ -110,8 +110,8 @@ py::bytes encode_image(
         : SPNG_INTERLACE_NONE;
 
     struct spng_ihdr ihdr = {
-        .height = static_cast<uint32_t>(image.shape(0)),
         .width = static_cast<uint32_t>(image.shape(1)),
+        .height = static_cast<uint32_t>(image.shape(0)),
         .bit_depth = bit_depth,
         .color_type = color_type,
         .compression_method = 0,
