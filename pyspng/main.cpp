@@ -181,31 +181,32 @@ py::array decode_image_bytes(py::bytes png_bits, spng_format fmt) {
     // Decide spng_format based on ihdr.
     //
     // Note: this is most likely buggy/incomplete for 16-bit formats.
+    spng_format render_fmt = fmt;
     if (fmt == 0) {
         switch (ihdr.color_type) {
             case SPNG_COLOR_TYPE_GRAYSCALE:
                 // TODO no G16 output format? using alpha
-                fmt = ihdr.bit_depth <= 8 ? SPNG_FMT_G8 : SPNG_FMT_GA16;
+                render_fmt = ihdr.bit_depth <= 8 ? SPNG_FMT_G8 : SPNG_FMT_GA16;
                 break;
             case SPNG_COLOR_TYPE_TRUECOLOR:
                 // TODO no RGB16 output format? using alpha
-                fmt = ihdr.bit_depth <= 8 ? SPNG_FMT_RGB8 : SPNG_FMT_RGBA16;
+                render_fmt = ihdr.bit_depth <= 8 ? SPNG_FMT_RGB8 : SPNG_FMT_RGBA16;
                 break;
             case SPNG_COLOR_TYPE_INDEXED:
-                fmt = SPNG_FMT_RGB8;
+                render_fmt = SPNG_FMT_RGB8;
                 break;
             case SPNG_COLOR_TYPE_GRAYSCALE_ALPHA:
-                fmt = ihdr.bit_depth <= 8 ? SPNG_FMT_GA8 : SPNG_FMT_GA16;
+                render_fmt = ihdr.bit_depth <= 8 ? SPNG_FMT_GA8 : SPNG_FMT_GA16;
                 break;
             case SPNG_COLOR_TYPE_TRUECOLOR_ALPHA:
-                fmt = ihdr.bit_depth <= 8 ? SPNG_FMT_RGBA8 : SPNG_FMT_RGBA16;
+                render_fmt = ihdr.bit_depth <= 8 ? SPNG_FMT_RGBA8 : SPNG_FMT_RGBA16;
                 break;
         }
     }
 
     int nc; // num columns
     int cs; // channel stride
-    switch (fmt) {
+    switch (render_fmt) {
         case SPNG_FMT_RGBA8:    nc = 4; cs = 1; break;
         case SPNG_FMT_RGBA16:   nc = 4; cs = 2; break;
         case SPNG_FMT_RGB8:     nc = 3; cs = 1; break;
@@ -218,14 +219,20 @@ py::array decode_image_bytes(py::bytes png_bits, spng_format fmt) {
     }
     int w = ihdr.width;
     int h = ihdr.height;
-    size_t out_size;
+    size_t out_size; 
 
-    if ((res = spng_decoded_image_size(ctx.get(), SPNG_FMT_PNG, &out_size)) != SPNG_OK) {
+    // issue in libspng prevents direct rendering of GA8 and GA16
+    // see: https://github.com/randy408/libspng/issues/207
+    if (fmt == 0 && (render_fmt == SPNG_FMT_GA8 || render_fmt == SPNG_FMT_GA16)) {
+        render_fmt = SPNG_FMT_PNG;
+    }
+
+    if ((res = spng_decoded_image_size(ctx.get(), render_fmt, &out_size)) != SPNG_OK) {
         throw std::runtime_error("pyspng: could not decode image size: " + std::string(spng_strerror(res)));
     }
 
     void* data = (void*)malloc(out_size);
-    if ((res = spng_decode_image(ctx.get(), data, out_size, SPNG_FMT_PNG, 0)) != SPNG_OK) {
+    if ((res = spng_decode_image(ctx.get(), data, out_size, render_fmt, 0)) != SPNG_OK) {
         free(data); 
         throw std::runtime_error("pyspng: could not decode image: " + std::string(spng_strerror(res)));
     }
