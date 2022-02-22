@@ -1,4 +1,6 @@
 
+**Note:** This is a fork of pyspng which can be found here: https://github.com/nurpax/pyspng/. See below for a list of differences.
+
 **Pyspng** is a small library to for efficiently loading PNG files to numpy arrays.
 Pyspng does not offer any image manipulation functionality.
 
@@ -15,9 +17,11 @@ import numpy as np
 import pyspng
 from pyspng import ProgressiveMode
 
+# DECODING
 with open('test.png', 'rb') as fin:
     nparr = pyspng.load(fin.read())
 
+# ENCODING
 binary = pyspng.encode(
     nparr,
     # Options: NONE (0), PROGRESSIVE (1), INTERLACED (2)
@@ -30,15 +34,20 @@ with open('test.png', 'wb') as fout:
 
 ## Installation
 
-
 ```
-pip install pyspng
+pip install pyspng-seunglab
 ```
 
-Note: binary wheels are built for Linux and Windows.  MacOS may not work out of the box.
+Binary wheels are built for Linux, MacOS, and Windows. This library is intended to be a drop-in replacement for pyspng, so simultaneous installations are not possible. If this is inconvinient, we can adjust this.
+
+## Differences from pyspng
+
+1. Compiles on MacOS
+2. Upgrades spng to 0.7.2
+3. Fixes a bug for decoding grayscale with alpha
+4. Adds an encoder function (new in libspng)
+5. Replaces zlib with miniz-2.2.0 for simplicity.
 
 ## License
 
-pyspng is provided under a BSD-style license that can be found in the LICENSE
-file. By using, distributing, or contributing to this project, you agree to the
-terms and conditions of this license.
+pyspng and pyspng-seunglab are provided under a BSD-style license that can be found in the LICENSE file. By using, distributing, or contributing to this project, you agree to the terms and conditions of this license.

@@ -7,7 +7,7 @@ import os
 import sys
 import subprocess
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 
 proj_root = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(proj_root, 'README.md'), encoding='utf-8') as f:
@@ -57,20 +57,19 @@ else:
     ]
 
 setup(
-    name="pyspng",
+    name="pyspng-seunglab",
     version=__version__,
-    author="Janne Hellsten",
-    author_email="jjhellst@gmail.com",
-    url="https://github.com/nurpax/pyspng", # TODO
-    description="Fast libspng-based PNG decoder",
+    author="William Silversmith (this fork), Janne Hellsten (original)",
+    author_email="ws9@princeton.edu, jjhellst@gmail.com",
+    url="https://github.com/seung-lab/pyspng-seunglab",
+    description="Fast libspng-based PNG decoder. Fork of pyspng.",
     project_urls={
-        'Documentation': 'https://pyspng.readthedocs.io/',
-        'Tracker': 'https://github.com/nurpax/pyspng/issues',
+        'Tracker': 'https://github.com/seung-lab/pyspng-seunglab',
     },
     long_description=long_description,
     long_description_content_type='text/markdown',
     ext_modules=ext_modules,
-    packages=['pyspng'],
+    packages=find_packages(),
     extras_require={"test": "pytest"},
     install_requires=[
         'numpy',
