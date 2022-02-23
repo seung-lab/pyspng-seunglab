@@ -10,7 +10,7 @@ uses the native [libspng](https://github.com/randy408/libspng) library for fast 
 decoding.  Synthetic benchmarks indicate pyspng to be roughly 2-3x faster in
 loading uncompressed PNGs than the Python Pillow library.
 
-## Example
+## Scripting Example
 
 ```python
 import numpy as np
@@ -32,9 +32,24 @@ with open('test.png', 'wb') as fout:
     fout.write(binary)
 ```
 
+## CLI Example
+
+There is a CLI included with this distribution.
+
+```bash
+# turn a numpy file into a highly compressed progressive PNG
+pyspng example.npy --level 9 --progressive # -> example.png
+
+# convert a PNG into a numpy file example.npy
+pyspng -d example.png 
+
+# read header
+pyspng --header example.png
+```
+
 ## Installation
 
-```
+```bash
 pip install pyspng-seunglab
 ```
 
@@ -47,6 +62,8 @@ Binary wheels are built for Linux, MacOS, and Windows. This library is intended 
 3. Fixes a bug for decoding grayscale with alpha
 4. Adds an encoder function (new in libspng)
 5. Replaces zlib with miniz-2.2.0 for simplicity.
+6. Adds CLI for compressing/decompressing npy files.
+7. Adds function for examining PNG headers.
 
 ## License
 
