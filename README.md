@@ -40,6 +40,9 @@ There is a CLI included with this distribution.
 # turn a numpy file into a highly compressed progressive PNG
 pyspng example.npy --level 9 --progressive # -> example.png
 
+# create a highly compressed progressive interlaced PNG
+pyspng example.npy --level 9 --interlaced # -> example.png
+
 # convert a PNG into a numpy file example.npy
 pyspng -d example.png 
 
