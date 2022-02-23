@@ -1,3 +1,4 @@
+[![PyPI version](https://badge.fury.io/py/pyspng-seunglab.svg)](https://badge.fury.io/py/pyspng-seunglab)
 
 **Note:** This is a fork of pyspng which can be found here: https://github.com/nurpax/pyspng/. See below for a list of differences.
 
