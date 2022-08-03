@@ -26,9 +26,9 @@ else:
   ]
 
 # MacOS doesn't like compiling C and C++ files together, so use
-# make to build a staticly linked spng.a library.
+# make to build a staticly linked libspng.a library.
 if sys.platform == 'darwin':
-  extra_compile_args += [ '-stdlib=libc++', '-mmacosx-version-min=10.9' ]
+  extra_compile_args += [ '-stdlib=libc++' ]
   subprocess.run("make", cwd=vendor_dir)
   ext_modules = [
     Extension("_pyspng_c",
