@@ -14,7 +14,7 @@ with open(os.path.join(proj_root, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 vendor_dir = "./vendor"
-spng_dir = f'{vendor_dir}/libspng-0.7.1'
+spng_dir = f'{vendor_dir}/libspng-0.7.2'
 miniz_dir = f'{vendor_dir}/miniz-2.2.0'
 
 extra_compile_args = []
