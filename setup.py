@@ -7,7 +7,7 @@ import os
 import sys
 import subprocess
 
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 
 proj_root = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(proj_root, 'README.md'), encoding='utf-8') as f:
